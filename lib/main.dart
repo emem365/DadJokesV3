@@ -1,6 +1,8 @@
 import 'package:dadjokesmobile/slide_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 void main() {
   runApp(MyApp());
@@ -14,21 +16,30 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: GoogleFonts.alluraTextTheme(Theme.of(context).textTheme),
+        accentColor: Color(0xFFF15839),
       ),
       home: SplashScreen(),
     );
   }
 }
 
-class RandomJokeScreen extends StatelessWidget {
+class RandomJokeScreen extends StatefulWidget {
+  @override
+  _RandomJokeScreenState createState() => _RandomJokeScreenState();
+}
+
+class _RandomJokeScreenState extends State<RandomJokeScreen> {
+  final String joke =
+      'Did you hear about the guy whose whole left side was cut off? He\'s all right now.';
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: <Color>[
-            Color(0xFFF5A665),
-            Color(0xFFE16D0F),
+            Color(0xFF80CAAA),
+            Color(0xFF62BD96),
           ],
           end: Alignment.bottomRight,
           begin: Alignment.topLeft,
@@ -36,39 +47,71 @@ class RandomJokeScreen extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 1.5,
-                child: RaisedButton(
-                  color: Color(0xFFF1E5C0),
-                  textColor: Color.fromARGB(255, 103, 103, 103),
-                  onPressed: () {},
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Text('Random Joke',
-                        style: Theme.of(context).textTheme.headline4),
+        body: FutureBuilder(
+          future: DadJokesService.getRandomJoke(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Column(
+                children: [
+                  Spacer(),
+                  Text(
+                    '\"${snapshot.data}\"',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        .apply(color: Colors.white),
+                    maxLines: 12,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ),
-              SizedBox(height: 40),
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 1.5,
-                child: RaisedButton(
-                  color: Color(0xFFF1E5C0),
-                  textColor: Color.fromARGB(255, 103, 103, 103),
-                  onPressed: () {},
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Text('Search',
-                        style: Theme.of(context).textTheme.headline4),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: RaisedButton(
+                            color: Color(0xFFF15839),
+                            onPressed: () {
+                              setState(() {});
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: Text('Random Joke',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4
+                                      .apply(color: Colors.white)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 4),
+                        Expanded(
+                          child: RaisedButton(
+                            color: Color(0xFFF15839),
+                            onPressed: () {},
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: Text('Search',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4
+                                      .apply(color: Colors.white)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                ],
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(
                 ),
-              ),
-            ],
-          ),
+              );
+            }
+          },
         ),
       ),
     );
@@ -100,7 +143,9 @@ class ChooseScreen extends StatelessWidget {
                 child: RaisedButton(
                   color: Color(0xFFF1E5C0),
                   textColor: Color.fromARGB(255, 103, 103, 103),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(SlideRoute(widget: RandomJokeScreen()));
+                  },
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Text('Random Joke',
@@ -206,48 +251,26 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-// class MyHomePage extends StatefulWidget {
-//   MyHomePage({Key key, this.title}) : super(key: key);
-//   final String title;
 
-//   @override
-//   _MyHomePageState createState() => _MyHomePageState();
-// }
+class DadJokesService {
+  static String url = "https://icanhazdadjoke.com/";
+  static Future<String> getRandomJoke() async {
+    var response = await http.get(url, headers: {'Accept': 'text/plain'});
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return "Error with status code : ${response.statusCode}";
+    }
+  }
 
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   void _incrementCounter() {
-//     setState(() {
-//       _counter++;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Text(
-//               'You have pushed the button this many times:',
-//             ),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headline4,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
+  static Future<String> getJokeByTopic(String topic) async {
+    String searchURL='$url/search?term=$topic&limit=30';
+    var response = await http.get(searchURL, headers: {'Accept': 'application/json'});
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      return (jsonResponse['results']..shuffle()).first['joke'];
+    } else {
+      return "Error with status code : ${response.statusCode}";
+    }
+  }
+}
