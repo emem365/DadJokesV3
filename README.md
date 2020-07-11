@@ -1,6 +1,6 @@
 # DadJokesV2
 
-<img src="previews/welcome.jpg" width="200"/> <img src="previews/randomjoke.jpg" width="200"/> <img src="previews/searchjoke.jpg" width="200"/>
+<img src="previews/welcome.jpg" width="250"/> <img src="previews/randomjoke.jpg" width="250"/> <img src="previews/searchjoke.jpg" width="250"/>
 
 DadJokes is back guys! A mobile application version to DadJokes is here! API credit still goes to : [icanhazdadjoke](http://icanhazdadjoke.com)
 
