@@ -1,4 +1,5 @@
 import 'package:dadjokesmobile/random_jokes_screen.dart';
+import 'package:dadjokesmobile/search_screen.dart';
 import 'package:dadjokesmobile/slide_transition.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,9 @@ class ChooseScreen extends StatelessWidget {
                 child: RaisedButton(
                   color: Color(0xFFF1E5C0),
                   textColor: Color.fromARGB(255, 103, 103, 103),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(SlideRoute(widget: SearchScreen()));
+                  },
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     child: Text('Search',

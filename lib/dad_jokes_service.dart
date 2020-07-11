@@ -17,7 +17,7 @@ class DadJokesService {
     var response = await http.get(searchURL, headers: {'Accept': 'application/json'});
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);
-      return (jsonResponse['results']..shuffle()).first['joke'];
+      return (jsonResponse['results']..shuffle()).last['joke'];
     } else {
       return "Error with status code : ${response.statusCode}";
     }

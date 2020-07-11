@@ -1,22 +1,26 @@
 import 'package:dadjokesmobile/dad_jokes_service.dart';
+import 'package:dadjokesmobile/random_jokes_screen.dart';
 import 'package:dadjokesmobile/search_screen.dart';
-import 'package:dadjokesmobile/slide_transition.dart';
 import 'package:flutter/material.dart';
 
-class RandomJokeScreen extends StatefulWidget {
+import 'slide_transition.dart';
+
+class SearchJokeScreen extends StatefulWidget {
+  final String term;
+  SearchJokeScreen(this.term);
   @override
-  _RandomJokeScreenState createState() => _RandomJokeScreenState();
+  _SearchJokeScreenState createState() => _SearchJokeScreenState();
 }
 
-class _RandomJokeScreenState extends State<RandomJokeScreen> {
+class _SearchJokeScreenState extends State<SearchJokeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: <Color>[
-            Color(0xFF80CAAA),
-            Color(0xFF62BD96),
+            Color(0xFFF1E5C0),
+            Color(0xFFD9B855),
           ],
           end: Alignment.bottomRight,
           begin: Alignment.topLeft,
@@ -25,7 +29,7 @@ class _RandomJokeScreenState extends State<RandomJokeScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: FutureBuilder(
-          future: DadJokesService.getRandomJoke(),
+          future: DadJokesService.getJokeByTopic(widget.term),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return Column(
@@ -36,7 +40,7 @@ class _RandomJokeScreenState extends State<RandomJokeScreen> {
                     style: Theme.of(context)
                         .textTheme
                         .headline4
-                        .apply(color: Colors.white),
+                        .apply(color: Colors.black),
                     maxLines: 12,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -48,9 +52,9 @@ class _RandomJokeScreenState extends State<RandomJokeScreen> {
                       children: <Widget>[
                         Expanded(
                           child: RaisedButton(
-                            color: Color(0xFFF15839),
+                            color: Color(0xFF62BD96),
                             onPressed: () {
-                              setState(() {});
+                              Navigator.of(context).pushReplacement(SlideRoute(widget: RandomJokeScreen()));
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 15),
@@ -58,24 +62,24 @@ class _RandomJokeScreenState extends State<RandomJokeScreen> {
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline4
-                                      .apply(color: Colors.white)),
+                                      .apply(color: Colors.white70)),
                             ),
                           ),
                         ),
                         SizedBox(width: 4),
                         Expanded(
                           child: RaisedButton(
-                            color: Color(0xFFF15839),
+                            color: Color(0xFF62BD96),
                             onPressed: () {
                               Navigator.of(context).pushReplacement(SlideRoute(widget: SearchScreen()));
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(vertical: 15),
-                              child: Text('Search',
+                              child: Text('Try again?',
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline4
-                                      .apply(color: Colors.white)),
+                                      .apply(color: Colors.white70)),
                             ),
                           ),
                         ),
@@ -86,8 +90,7 @@ class _RandomJokeScreenState extends State<RandomJokeScreen> {
               );
             } else {
               return Center(
-                child: CircularProgressIndicator(
-                ),
+                child: CircularProgressIndicator(),
               );
             }
           },
