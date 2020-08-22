@@ -1,12 +1,13 @@
-# DadJokesV2
+# Note:
+This repo has been moved to [emem365/DadJokes/DadJokesV1](https://github.com/emem365/DadJokes/tree/master/DadJokesV1)
 
-<img src="previews/welcome.jpg" width="250"/> <img src="previews/randomjoke.jpg" width="250"/> <img src="previews/searchjoke.jpg" width="250"/>
+# DadJokesV3
 
 DadJokes is back guys! A mobile application version to DadJokes is here! API credit still goes to : [icanhazdadjoke](http://icanhazdadjoke.com)
 
 ## Getting Started
 
-This is simple flutter project. If you want to mess around with the code, clone the repo: https://github.com/emem365/DadJokesV2.git
+This is simple flutter project. If you want to mess around with the code, clone the repo: https://github.com/emem365/DadJokes.git
 
 ### Prerequisites
 
