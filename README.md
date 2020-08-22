@@ -1,5 +1,5 @@
 # Note:
-This repo has been moved to [emem365/DadJokes/DadJokesV1](https://github.com/emem365/DadJokes/tree/master/DadJokesV1)
+This repo has been moved to [emem365/DadJokes/DadJokesV3](https://github.com/emem365/DadJokes/tree/master/DadJokesV3)
 
 # DadJokesV3
 
